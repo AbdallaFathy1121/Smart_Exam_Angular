@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { DataStorageService } from '../../services/data-storage.service';
 
 @Component({
   selector: 'app-register',
@@ -8,6 +9,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
+
+  constructor(private dataStorageService: DataStorageService) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -27,13 +30,16 @@ export class RegisterComponent implements OnInit {
       'password': new FormControl(password, [Validators.required, Validators.minLength(8)]),
       'confirmPassword': new FormControl(confirmPassword, Validators.required)
     });
-
-
-
-
-
   }
 
+  onSubmit() {
+    this.dataStorageService.register(this.registerForm.value)
+      .subscribe(res => {
+        console.log(res);
+      }, errorRes => {
+        console.log(errorRes);
+      });
+  }
 
 
 }

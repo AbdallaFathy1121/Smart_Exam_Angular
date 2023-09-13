@@ -5,6 +5,8 @@ import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http'
+import { DataStorageService } from './services/data-storage.service';
 
 
 
@@ -17,10 +19,12 @@ import { ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     SharedModule,
     ReactiveFormsModule,
+    HttpClientModule,
     RouterModule.forChild([
       {path: 'register', component: RegisterComponent},
       {path: 'login', component: LoginComponent}
     ])
-  ]
+  ],
+  providers: [DataStorageService]
 })
 export class AuthModule { }
