@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DataStorageService } from '../../services/data-storage.service';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -9,8 +11,13 @@ import { DataStorageService } from '../../services/data-storage.service';
 })
 export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
+  isLoading: boolean = false;
 
-  constructor(private dataStorageService: DataStorageService) {}
+  constructor(
+    private dataStorageService: DataStorageService,
+    private toastr: ToastrService,
+    private router: Router) 
+  {}
 
   ngOnInit(): void {
     this.initForm();
@@ -33,11 +40,18 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit() {
+    this.isLoading = true;
     this.dataStorageService.register(this.registerForm.value)
       .subscribe(res => {
+        this.isLoading = false;
         console.log(res);
+        this.router.navigate(["/auth/login"]);
+        this.toastr.success(res.messages.toString());
+        this.registerForm.reset();
       }, errorRes => {
+        this.isLoading = false;
         console.log(errorRes);
+        this.toastr.error(errorRes);
       });
   }
 

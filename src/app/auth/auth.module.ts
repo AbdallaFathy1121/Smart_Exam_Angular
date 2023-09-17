@@ -9,7 +9,6 @@ import { HttpClientModule } from '@angular/common/http'
 import { DataStorageService } from './services/data-storage.service';
 
 
-
 @NgModule({
   declarations: [
     RegisterComponent,

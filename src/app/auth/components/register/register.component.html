@@ -96,7 +96,18 @@
               >Is Teacher ?</label
             >
           </div>
-          <button type="submit" class="btn btn-primary" [disabled]="!registerForm.valid">Submit</button>
+          <button 
+          type="submit" 
+          class="btn btn-primary" 
+          [ngClass]="{'buttonload': isLoading == true}"
+          [disabled]="!registerForm.valid || isLoading"
+        >
+          <i *ngIf="isLoading" class="fa fa-spinner fa-spin mr-2 mt-1"></i>  
+          {{ isLoading ? 'Loading': 'Submit' }}
+        </button>
+          <a routerLink="/auth/login" class="sign-up d-block mt-4 text-center">
+            Sign In <i class="fa fa-arrow-right ml-2"></i>
+          </a>
         </form>
       </div>
     </div>

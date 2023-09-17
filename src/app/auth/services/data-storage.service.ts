@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 import { Register } from '../models/register.model';
 import { MainResponse } from 'src/app/shared/models/main-response.model';
 import { environment } from 'src/environments/environment';
-import { catchError, tap, throwError } from 'rxjs';
+import { catchError, throwError } from 'rxjs';
+import { Login } from '../models/login.model';
 
 @Injectable()
 export class DataStorageService {
@@ -21,7 +22,16 @@ export class DataStorageService {
       )
   }
 
-
+  login(model: Login) {
+    return this.http
+      .post<MainResponse> (
+        environment.baseApi + 'Users/Login',
+        model
+      )
+      .pipe(
+        catchError(this.handleError)
+      )
+  }
 
   private handleError(errorRes: HttpErrorResponse) {
     let errorMessage = "An unknown error occurred!";
@@ -35,7 +45,6 @@ export class DataStorageService {
     });
 
     return throwError(errors);
-}
-
+  }
 
 }
