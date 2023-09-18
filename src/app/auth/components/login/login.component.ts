@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DataStorageService } from '../../services/data-storage.service';
+import { AuthService } from '../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -14,7 +14,7 @@ export class LoginComponent implements OnInit {
   isLoading: boolean = false;
 
   constructor(
-    private dataStorageService: DataStorageService,
+    private authService: AuthService,
     private toastr: ToastrService,
     private router: Router) 
   {}
@@ -35,16 +35,14 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     this.isLoading = true;
-    this.dataStorageService.login(this.loginForm.value)
+    this.authService.login(this.loginForm.value)
       .subscribe((res) => {
         this.isLoading = false;
-        console.log(res);
         this.router.navigate(['/']);
         this.toastr.success(res.messages.toString());
         this.loginForm.reset();
       }, errorRes => {
         this.isLoading = false;
-        console.log(errorRes);
         this.toastr.error(errorRes);
       });
   }
