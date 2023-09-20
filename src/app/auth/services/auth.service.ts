@@ -58,7 +58,7 @@ export class AuthService {
       tokenExpiration: string;
     } = JSON.parse(localStorage.getItem('userData')!);
     if(!userData) {
-        return;
+      return;
     }
 
     const loadedUser = new User(

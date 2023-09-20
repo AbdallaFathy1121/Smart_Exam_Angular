@@ -13,7 +13,6 @@ import { ReactiveFormsModule } from '@angular/forms';
     LoginComponent
   ],
   imports: [
-    CommonModule,
     SharedModule,
     ReactiveFormsModule,
     RouterModule.forChild([

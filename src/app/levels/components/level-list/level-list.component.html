@@ -1,0 +1,32 @@
+<div class="cart container mt-5">
+    <!-- Start Table -->
+    <div class="table-responsive-lg mb-2">
+      <table class="table table-hover text-center">
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Remove</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- If Cart is Empty -->
+          <tr *ngIf="levels.length == 0">
+            <td colspan="6">There are no products to display in the card</td>
+          </tr>
+          <!-- If Cart is Empty -->
+  
+          <tr *ngFor="let item of levels">
+            <td class="name">{{ item.id }}</td>
+            <td class="name">{{ item.levelName }}</td>
+            <td class="actions">
+              <button 
+                class="action btn"
+                style="cursor: pointer; background-color: blue;"
+                [routerLink]="['/levels/'+ item.id +'/edit']">Edit</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+</div>
