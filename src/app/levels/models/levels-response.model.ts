@@ -5,3 +5,9 @@ export interface LevelsResponse {
     messages: [],
     data: Level[]
 }
+
+export interface LevelResponse {
+    isSuccess: boolean,
+    messages: [],
+    data: Level
+}

@@ -3,7 +3,7 @@ import { Level } from '../models/level.model';
 import { Subject, catchError, tap, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { LevelsResponse } from '../models/levels-response.model';
+import { LevelResponse, LevelsResponse } from '../models/levels-response.model';
 
 @Injectable()
 export class LevelsService {
@@ -30,6 +30,14 @@ export class LevelsService {
         tap(result => {
           this.setLevels(result.data)
         })
+      )
+  }
+
+  fetchLevelById(id: number) {
+    return this.http
+      .get<LevelResponse>(environment.baseApi + 'Levels/' + id)
+      .pipe(
+        catchError(this.handleError)
       )
   }
 

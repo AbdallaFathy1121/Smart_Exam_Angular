@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Register } from '../models/register.model';
 import { MainResponse } from 'src/app/shared/models/main-response.model';
 import { environment } from 'src/environments/environment';
-import { BehaviorSubject, catchError, map, take, tap, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, tap, throwError } from 'rxjs';
 import { Login } from '../models/login.model';
 import { User } from '../models/user.model';
 import { Router } from '@angular/router';
@@ -45,40 +45,22 @@ export class AuthService {
   logout() {
     this.user.next(null);
     this.router.navigate(['/auth/login']);
-    localStorage.removeItem('userData');
+    localStorage.removeItem('token');
   }
 
   autoLogin() {
-    const userData: {
-      userId: string;
-      name: string;
-      email: string;
-      roles: [];
-      token: string;
-      tokenExpiration: string;
-    } = JSON.parse(localStorage.getItem('userData')!);
-    if(!userData) {
+    let token = JSON.parse(localStorage.getItem('token')!);
+    if(!token) {
       return;
     }
 
-    const loadedUser = new User(
-      userData.userId, 
-      userData.name, 
-      userData.email,
-      userData.roles,
-      userData.token,
-      userData.tokenExpiration
-    );
-    
-    if(loadedUser.token) {
-      this.user.next(loadedUser);
-    }
+    this.user.next(this.getUser(token));
   }
 
   private handleAuthentication(data: any) {
-    const user = new User(data.userId, data.name, data.email, data.roles, data.token, data.tokenExpiration);
-    this.user.next(user);
-    localStorage.setItem('userData', JSON.stringify(user));
+    let token = data.token;
+    localStorage.setItem('token', JSON.stringify(token));
+    this.user.next(this.getUser(token));
   }
 
   private handleError(errorRes: HttpErrorResponse) {
@@ -94,4 +76,9 @@ export class AuthService {
 
     return throwError(errors);
   }
+
+  private getUser(token: string): User {
+    return JSON.parse(atob(token.split('.')[1])) as User
+  }
+
 }
