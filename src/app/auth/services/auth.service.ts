@@ -49,7 +49,7 @@ export class AuthService {
   }
 
   autoLogin() {
-    let token = JSON.parse(localStorage.getItem('token')!);
+    let token = this.getUserToken();
     if(!token) {
       return;
     }
@@ -79,6 +79,10 @@ export class AuthService {
 
   private getUser(token: string): User {
     return JSON.parse(atob(token.split('.')[1])) as User
+  }
+
+  getUserToken() {
+    return JSON.parse(localStorage.getItem('token')!);
   }
 
 }

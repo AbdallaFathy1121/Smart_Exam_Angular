@@ -4,6 +4,8 @@ import { Subject, catchError, tap, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { LevelResponse, LevelsResponse } from '../models/levels-response.model';
+import { AddLevelModel } from '../models/add-level.model';
+import { MainResponse } from 'src/app/shared/models/main-response.model';
 
 @Injectable()
 export class LevelsService {
@@ -41,6 +43,25 @@ export class LevelsService {
       )
   }
 
+  addNewLevel(level: AddLevelModel) {
+    return this.http
+      .post<MainResponse>(environment.baseApi + 'Levels/Add', {
+        "name": level.levelName
+      })
+      .pipe(
+        catchError(this.handleError)
+      )
+  }
+
+  updateLevel(id: number, level: AddLevelModel) {
+    return this.http
+      .post<MainResponse>(environment.baseApi + 'Levels/' + id + '/Update', {
+        "name": level.levelName
+      })
+      .pipe(
+        catchError(this.handleError)
+      )
+  }
 
   private handleError(errorRes: HttpErrorResponse) {
     let errorMessage = "An unknown error occurred!";

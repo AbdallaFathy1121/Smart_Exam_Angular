@@ -1,8 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Level } from '../../models/level.model';
-import { Subscription } from 'rxjs';
-import { ActivatedRoute, Params } from '@angular/router';
+import { Observable, Subscription } from 'rxjs';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { LevelsService } from '../../services/levels.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { Level } from '../../models/level.model';
+import { MainResponse } from 'src/app/shared/models/main-response.model';
 
 @Component({
   selector: 'app-level-edit',
@@ -11,29 +14,65 @@ import { LevelsService } from '../../services/levels.service';
 })
 export class LevelEditComponent implements OnInit, OnDestroy {
   id!: number;
-  level!: Level; 
   paramSubscription!: Subscription;
+  levelForm!: FormGroup;
+  editMode: boolean = false;
+  isLoading: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
-    private levelsService: LevelsService
+    private router: Router,
+    private levelsService: LevelsService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
     this.paramSubscription = this.route.params.subscribe((params: Params) => {
       this.id = +params['id'];
-      this.levelsService.fetchLevelById(this.id)
-        .subscribe(res => {
-          this.level = res.data;
-          console.log(this.level);
-        }, errorRes => {
-          console.log(errorRes);
-        });
+      this.editMode = params['id'] != null;
+      this.initForm();
     });
   }
 
   ngOnDestroy(): void {
     this.paramSubscription.unsubscribe();
+  }
+
+  private initForm() {
+    this.levelForm = new FormGroup({
+      'levelName': new FormControl('', [Validators.required])
+    });
+
+    if (this.editMode) {
+      this.levelsService.fetchLevelById(this.id).subscribe(res => {
+        let levelName = res.data.levelName;
+        this.levelForm.get('levelName')?.setValue(levelName);
+      }, errorRes => {
+        this.toastr.error(errorRes);
+        this.router.navigate(['/levels']);
+      })      
+    }
+  }
+
+  onSubmit() {
+    this.isLoading = true;
+    let levelObservable: Observable<MainResponse>;
+
+    if (this.editMode) {
+      levelObservable = this.levelsService.updateLevel(this.id, this.levelForm.value);
+    } else {
+      levelObservable = this.levelsService.addNewLevel(this.levelForm.value);
+    }
+
+    levelObservable.subscribe(res => {
+      this.isLoading = false;
+      this.router.navigate(['/levels']);
+      this.toastr.success(res.messages.toString());
+      this.levelForm.reset();
+    }, errorRes => {
+      this.isLoading = false;
+      this.toastr.error(errorRes);
+    })
   }
 
 }

@@ -26,25 +26,20 @@ export class HasRoleGuard implements CanActivate {
     | UrlTree
     | Observable<boolean | UrlTree>
     | Promise<boolean | UrlTree> {
-    
     return this.authService.user.pipe(
-        take(1),
-        map((user) => {
-            if (user != null) {
-                const isAuthorized = user.roles.includes(route.data['role']);
-                if (!isAuthorized) {
-                    this.router.createUrlTree(['/']);
-                    this.toastr.error("You are not Authorized");
-                }
-
-                return isAuthorized;
-            }
-            else {
-                return this.router.createUrlTree(['/auth/login']);
-            }
-        })
-    )
-
-
+      take(1),
+      map((user) => {
+        if (user != null) {
+          const isAuthorized = user.roles.includes(route.data['role']);
+          if (!isAuthorized) {
+            this.router.createUrlTree(['/']);
+            this.toastr.error('You are not Authorized');
+          }
+          return isAuthorized;
+        } else {
+          return this.router.createUrlTree(['/auth/login']);
+        }
+      })
+    );
   }
 }

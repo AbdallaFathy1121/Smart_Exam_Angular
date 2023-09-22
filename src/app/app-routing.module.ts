@@ -19,8 +19,7 @@ const routes: Routes = [
     data: {
       role: Roles.ADMIN
     },
-    loadChildren: () =>
-      import('./levels/levels.module').then((x) => x.LevelsModule),
+    loadChildren: () => import('./levels/levels.module').then((x) => x.LevelsModule),
   },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
