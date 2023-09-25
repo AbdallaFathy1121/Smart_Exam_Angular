@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
@@ -40,6 +40,7 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit() {
+    console.log(this.registerForm.value);
     this.isLoading = true;
     this.authService.register(this.registerForm.value)
       .subscribe(res => {

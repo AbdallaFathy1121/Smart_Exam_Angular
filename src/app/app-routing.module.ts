@@ -1,27 +1,33 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { IsAuthenticatedGuard } from './auth/services/is-authenticated.guard';
-import { Roles } from './shared/models/roles';
 import { HasRoleGuard } from './auth/services/has-role.guard';
+import { Roles } from './shared/models/roles';
 
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./home/home.module').then((x) => x.HomeModule),
+    canActivate: [IsAuthenticatedGuard],
+    loadChildren: () => import('./subjects/subjects.module').then((x) => x.SubjectsModule),
   },
   {
     path: 'auth',
     loadChildren: () => import('./auth/auth.module').then((x) => x.AuthModule),
   },
   {
-    path: 'levels',
+    path: 'doctor',
     canActivate: [IsAuthenticatedGuard, HasRoleGuard],
     data: {
-      role: Roles.ADMIN
+      role: Roles.TEACHER
     },
-    loadChildren: () => import('./levels/levels.module').then((x) => x.LevelsModule),
+    loadChildren: () => import('./doctor/doctor.module').then((x) => x.DoctorModule),
   },
-  { path: '**', redirectTo: '', pathMatch: 'full' },
+  {
+    path: 'student',
+    canActivate: [IsAuthenticatedGuard],
+    loadChildren: () => import('./student/student.module').then((x) => x.StudentModule),
+  },
+  { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
 
 @NgModule({

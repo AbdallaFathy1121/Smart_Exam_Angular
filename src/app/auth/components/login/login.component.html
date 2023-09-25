@@ -1,67 +1,35 @@
-<div class="auth mt-5">
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-lg-8">
-          <h2>Login</h2>
-          <hr class="mb-3">
-          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-            <div class="form-group">
-              <label for="email">Email</label>
-              <input
-                type="text"
-                class="form-control"
-                id="email"
-                formControlName="email"
-              />
-              <span 
-                class="form-text text-danger"
-                *ngIf="!loginForm.get('email')?.valid && loginForm.get('email')?.touched">
-                <span
-                  *ngIf="loginForm.get('email')?.errors?.['required']">
-                  Email is required!
-                </span>
-                <span
-                  *ngIf="loginForm.get('email')?.errors?.['email']">
-                  Email not valid!
-                </span>
-              </span>
-            </div>
-            <div class="form-group">
-              <label for="password">Password</label>
-              <input
-                type="password"
-                class="form-control"
-                id="password"
-                formControlName="password"
-              />
-              <span 
-                class="form-text text-danger"
-                *ngIf="!loginForm.get('password')?.valid && loginForm.get('password')?.touched">
-                <span
-                  *ngIf="loginForm.get('password')?.errors?.['required']">
-                  Password is required!
-                </span>
-                <span
-                  *ngIf="loginForm.get('password')?.errors?.['minlength']?.['requiredLength']">
-                  Password not valid!
-                </span>
-              </span>
-            </div>
-            <button 
-              type="submit" 
-              class="btn btn-primary" 
-              [ngClass]="{'buttonload': isLoading == true}"
-              [disabled]="!loginForm.valid || isLoading"
-            >
-              <i *ngIf="isLoading" class="fa fa-spinner fa-spin mr-2 mt-1"></i>  
-              {{ isLoading ? 'Loading': 'Submit' }}
-            </button>
-            <a routerLink="/auth/register" class="sign-up d-block mt-4 text-center">
-                Sign Up <i class="fa fa-arrow-right ml-2"></i>
-            </a>
-          </form>
-        </div>
+<div class="login">
+  <div class="text-center loginhead">
+    <h2>تسجيل الدخول</h2>
+  </div>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col-md-6 col-sm-12">
+        <mat-form-field appearance="outline" color="warn">
+          <mat-label>الايميل</mat-label>
+          <input matInput type="email" formControlName="email" />
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-6 col-sm-12">
+        <mat-form-field appearance="outline" color="warn">
+          <mat-label>كلمة المرور</mat-label>
+          <input matInput type="password" formControlName="password" />
+        </mat-form-field>
       </div>
     </div>
-  </div>
-  
+    <div class="text-right loginfoot">
+      <a routerLink="/auth/register" color="primary">انشاء حساب ؟</a>
+      <button
+        mat-raised-button
+        type="submit"
+        color="warn"
+        [ngClass]="{ buttonload: isLoading == true }"
+        [disabled]="!loginForm.valid || isLoading"
+      >
+        <span *ngIf="isLoading" class="spinner-border spinner-border-sm ml-1" role="status" aria-hidden="true"></span>
+        {{ isLoading ? "تحميل..." : "تسجيل" }}
+      </button>
+    </div>
+  </form>
+</div>

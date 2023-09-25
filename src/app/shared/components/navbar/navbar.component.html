@@ -1,0 +1,33 @@
+<mat-toolbar color="primary" class="navbar navbar-default py-2" dir="rtl">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <a class="navbar-brand" routerLinkActive="active" routerLink="welcome"
+        ><img src="../../../assets/images/school_white_24dp.svg" alt="" />
+        فاينال
+      </a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="d-flex align-items-center">
+      <ul class="nav navbar-right d-flex align-items-center">
+        <li routerLinkActive="active" *ngIf="isAuthenticated">
+          <span *ngIf="roles">
+            <a *ngIf="roles[0] == 'teacher'" routerLink="/doctor/new-exam">أختبار جديد</a>
+          </span>
+        </li>
+        <li routerLinkActive="active" *ngIf="isAuthenticated">
+          <span *ngIf="roles">
+            <a *ngIf="roles[0] == 'teacher'" routerLink="/doctor/students">الطلاب</a>
+          </span>
+        </li>
+        <li *ngIf="isAuthenticated" routerLinkActive="active"><a routerLink="/">المواد </a></li>
+        <li *ngIf="isAuthenticated" routerLinkActive="active"><a (click)="onLogout()">خروج</a></li>
+        <li *ngIf="!isAuthenticated" routerLinkActive="active"><a routerLink="/auth/login">دخول</a></li>
+        <li *ngIf="!isAuthenticated" routerLinkActive="active"><a routerLink="/auth/register">انشاء حساب</a></li>
+        <li class="username" *ngIf="isAuthenticated">{{ userName }}</li>
+      </ul>
+    </div>
+    <!-- /.navbar-collapse -->
+  </div>
+</mat-toolbar>
