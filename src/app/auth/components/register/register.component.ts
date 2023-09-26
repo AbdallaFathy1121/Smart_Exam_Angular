@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { Register } from '../../models/register.model';
 
 @Component({
   selector: 'app-register',
@@ -31,16 +32,15 @@ export class RegisterComponent implements OnInit {
     let confirmPassword = '';
 
     this.registerForm = new FormGroup({
-      'name': new FormControl(name, [Validators.required, Validators.minLength(10)]),
+      'fullName': new FormControl(name, [Validators.required, Validators.minLength(10)]),
       'email': new FormControl(email, [Validators.required, Validators.email]),
-      'isTeacher': new FormControl(isTeacher, null),
       'password': new FormControl(password, [Validators.required, Validators.minLength(8)]),
-      'confirmPassword': new FormControl(confirmPassword, Validators.required)
+      'confirmPassword': new FormControl(confirmPassword, Validators.required),
+      'isTeacher': new FormControl(isTeacher)
     });
   }
 
   onSubmit() {
-    console.log(this.registerForm.value);
     this.isLoading = true;
     this.authService.register(this.registerForm.value)
       .subscribe(res => {

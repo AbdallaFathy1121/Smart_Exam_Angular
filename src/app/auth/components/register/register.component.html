@@ -7,15 +7,15 @@
       <div class="col-sm-12 mb-3">
         <mat-radio-group formControlName="isTeacher">
           <mat-radio-button
-            value="false"
-            [checked]="true"
+            [checked]=true
+            [value]="false"
             class="w-25 ml-5"
             color="warn"
             >طالب</mat-radio-button
           >
           <mat-radio-button
-            value='true'
-            [checked]=""
+            [checked]=false
+            [value]="true"
 
             class="w-25"
             color="warn"
@@ -26,9 +26,19 @@
       <div class="col-md-6 col-sm-12">
         <mat-form-field appearance="outline" color="warn">
           <mat-label>الاسم</mat-label>
-          <input matInput type="text" formControlName="name" />
-          <!-- <mat-hint color="warn">must more than 5</mat-hint> -->
+          <input matInput type="text" formControlName="fullName" />
         </mat-form-field>
+        <span
+          class="text-danger"
+          *ngIf="!registerForm.get('fullName')?.valid && registerForm.get('fullName')?.touched"
+        >
+          <span *ngIf="registerForm.get('fullName')?.errors?.['required']">
+            هذا الحقل مطلوب
+          </span>
+          <span *ngIf="registerForm.get('fullName')?.errors?.['minlength']?.['requiredLength']">
+            الاسم لايجب ان يكون اقل من 8 احرف
+          </span>
+        </span>
       </div>
 
       <div class="col-md-6 col-sm-12">
@@ -36,6 +46,17 @@
           <mat-label>البريد الالكترونى</mat-label>
           <input matInput type="email" formControlName="email" />
         </mat-form-field>
+        <span
+          class="text-danger"
+          *ngIf="!registerForm.get('email')?.valid && registerForm.get('email')?.touched"
+        >
+          <span *ngIf="registerForm.get('email')?.errors?.['required']">
+            هذا الحقل مطلوب
+          </span>
+          <span *ngIf="registerForm.get('email')?.errors?.['email']">
+            هذا البريد الالكترونى غير صحيح
+          </span>
+        </span>
       </div>
 
       <div class="col-md-6 col-sm-12">
@@ -43,6 +64,17 @@
           <mat-label>كلمة المرور</mat-label>
           <input matInput type="password" formControlName="password" />
         </mat-form-field>
+        <span
+          class="text-danger"
+          *ngIf="!registerForm.get('password')?.valid && registerForm.get('password')?.touched"
+        >
+          <span *ngIf="registerForm.get('password')?.errors?.['required']">
+            هذا الحقل مطلوب
+          </span>
+          <span *ngIf="registerForm.get('password')?.errors?.['minlength']?.['requiredLength']">
+            كلمة السر لايجب ان تكون اقل من 8 احرف
+          </span>
+        </span>
       </div>
 
       <div class="col-md-6 col-sm-12">
@@ -50,6 +82,12 @@
           <mat-label>تاكيد كلمة المرور</mat-label>
           <input matInput type="password" formControlName="confirmPassword" />
         </mat-form-field>
+        <span
+          class="text-danger"
+          *ngIf="!registerForm.get('confirmPassword')?.valid && registerForm.get('confirmPassword')?.touched"
+        >
+          هذا الحقل مطلوب
+        </span>
       </div>
     </div>
     <div class="text-right registfoot">

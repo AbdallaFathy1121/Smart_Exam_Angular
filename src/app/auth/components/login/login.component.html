@@ -9,6 +9,17 @@
           <mat-label>الايميل</mat-label>
           <input matInput type="email" formControlName="email" />
         </mat-form-field>
+        <span
+          class="text-danger"
+          *ngIf="!loginForm.get('email')?.valid && loginForm.get('email')?.touched"
+        >
+          <span *ngIf="loginForm.get('email')?.errors?.['required']">
+            هذا الحقل مطلوب
+          </span>
+          <span *ngIf="loginForm.get('email')?.errors?.['email']">
+            هذا البريد الالكترونى غير صحيح
+          </span>
+        </span>
       </div>
 
       <div class="col-md-6 col-sm-12">
@@ -16,6 +27,17 @@
           <mat-label>كلمة المرور</mat-label>
           <input matInput type="password" formControlName="password" />
         </mat-form-field>
+        <span
+          class="text-danger"
+          *ngIf="!loginForm.get('password')?.valid && loginForm.get('password')?.touched"
+        >
+          <span *ngIf="loginForm.get('password')?.errors?.['required']">
+            هذا الحقل مطلوب
+          </span>
+          <span *ngIf="loginForm.get('password')?.errors?.['minlength']?.['requiredLength']">
+            كلمة السر لايجب ان تكون اقل من 8 احرف
+          </span>
+        </span>
       </div>
     </div>
     <div class="text-right loginfoot">
@@ -27,7 +49,12 @@
         [ngClass]="{ buttonload: isLoading == true }"
         [disabled]="!loginForm.valid || isLoading"
       >
-        <span *ngIf="isLoading" class="spinner-border spinner-border-sm ml-1" role="status" aria-hidden="true"></span>
+        <span
+          *ngIf="isLoading"
+          class="spinner-border spinner-border-sm ml-1"
+          role="status"
+          aria-hidden="true"
+        ></span>
         {{ isLoading ? "تحميل..." : "تسجيل" }}
       </button>
     </div>

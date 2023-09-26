@@ -11,18 +11,16 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="d-flex align-items-center">
       <ul class="nav navbar-right d-flex align-items-center">
-        <li routerLinkActive="active" *ngIf="isAuthenticated">
-          <span *ngIf="roles">
-            <a *ngIf="roles[0] == 'teacher'" routerLink="/doctor/new-exam">أختبار جديد</a>
-          </span>
+        <li routerLinkActive="active" *ngIf="roles">
+          <a routerLink="/doctor/new-exam">أختبار جديد</a>
         </li>
         <li routerLinkActive="active" *ngIf="isAuthenticated">
           <span *ngIf="roles">
-            <a *ngIf="roles[0] == 'teacher'" routerLink="/doctor/students">الطلاب</a>
+            <a routerLink="/doctor/students">الطلاب</a>
           </span>
         </li>
-        <li *ngIf="isAuthenticated" routerLinkActive="active"><a routerLink="/">المواد </a></li>
-        <li *ngIf="isAuthenticated" routerLinkActive="active"><a (click)="onLogout()">خروج</a></li>
+        <li *ngIf="isAuthenticated" routerLinkActive="active"><a routerLink="./">المواد </a></li>
+        <li *ngIf="isAuthenticated" routerLinkActive="active"><a style="cursor: pointer;" (click)="onLogout()">خروج</a></li>
         <li *ngIf="!isAuthenticated" routerLinkActive="active"><a routerLink="/auth/login">دخول</a></li>
         <li *ngIf="!isAuthenticated" routerLinkActive="active"><a routerLink="/auth/register">انشاء حساب</a></li>
         <li class="username" *ngIf="isAuthenticated">{{ userName }}</li>
