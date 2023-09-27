@@ -33,6 +33,7 @@ export class NewExamComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.userSubscription = this.authService.user.subscribe((user) => {
       this.teacherId = user?.userId;
       if (localStorage.getItem('subjectId')) {
@@ -40,6 +41,7 @@ export class NewExamComponent implements OnInit, OnDestroy {
         this.stepperIndex = 1;
       }
       this.initQuestionForm();
+      this.isLoading = false;
     });
   }
 
@@ -57,17 +59,17 @@ export class NewExamComponent implements OnInit, OnDestroy {
     } as AddSubjectModel
     
     this.examService.addSubject(model)
-    .subscribe(res => {
-      this.isLoading = false;
+      .subscribe(res => {
         this.toastr.success(res.messages.toString());
         localStorage.setItem('subjectId', res.data.toString());
         this.addedSubject = true;
         this.stepperIndex = 1;
+        this.isLoading = false;
       }, errorRes => {
-        this.isLoading = false
         this.toastr.error(errorRes);
         this.stepperIndex = 0;
-      })
+        this.isLoading = false
+      });
   }
     
   initQuestionForm() {
@@ -101,14 +103,14 @@ export class NewExamComponent implements OnInit, OnDestroy {
       console.log(model);
 
       this.examService.addQuestion(model)
-      .subscribe(res => {
-          this.isLoading = false;
+        .subscribe(res => {
           this.toastr.success(res.messages.toString());
           this.questionForm.reset();
-        }, errorRes => {
-          this.isLoading = false
-          this.toastr.error(errorRes);
-        })
+          this.isLoading = false;
+          }, errorRes => {
+            this.toastr.error(errorRes);
+            this.isLoading = false
+          });
 
     }
     else {
@@ -118,21 +120,25 @@ export class NewExamComponent implements OnInit, OnDestroy {
   }
 
   onShowQuestions() {
+    this.isLoading = true;
+    
     let subjectId = JSON.parse(localStorage.getItem('subjectId')!);
     
     this.examService.getQuestionsBySubjectId(subjectId)
-    .subscribe((questions) => {
-      this.questionForm.reset();
-      this.questions = questions.data;
-      if (this.questions.length > 0) {
-        this.showquestions = true;
-      }
-      this.stepperIndex = 2;
-    }, errorRes => {
-      this.showquestions = false;
-      this.stepperIndex = 1;
-      this.toastr.error(errorRes);
-    })
+      .subscribe((questions) => {
+        this.questionForm.reset();
+        this.questions = questions.data;
+        if (this.questions.length > 0) {
+          this.showquestions = true;
+        }
+        this.stepperIndex = 2;
+        this.isLoading = false;
+      }, errorRes => {
+        this.showquestions = false;
+        this.stepperIndex = 1;
+        this.toastr.error(errorRes);
+        this.isLoading = false;
+      });
   }
 
   onDelete() {
@@ -148,6 +154,8 @@ export class NewExamComponent implements OnInit, OnDestroy {
   }
 
   onDeleteQuestionById(id: number) {
+    this.isLoading = true;
+    
     const model = {
       id: id
     } as DeleteQuestionModel
@@ -156,8 +164,10 @@ export class NewExamComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         this.toastr.success(res.messages.toString());
         this.onShowQuestions();
+        this.isLoading = false;
       }, errorRes => {
         this.toastr.error(errorRes);
+        this.isLoading = false;
       })
   }
 

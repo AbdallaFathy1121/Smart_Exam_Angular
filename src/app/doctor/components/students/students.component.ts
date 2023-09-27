@@ -23,7 +23,7 @@ export class StudentsComponent implements OnInit {
   constructor() {
     this.displayedColumns = ['position', 'name', 'weight', 'symbol'];
     this.dataSource = this.ELEMENT_DATA;
-   }
+  }
 
   
   ngOnInit(): void {

@@ -1,5 +1,6 @@
 <div class="new-exam">
-  <mat-horizontal-stepper linear #stepper [selectedIndex]="stepperIndex">
+  <mat-spinner *ngIf="isLoading" class="m-auto"></mat-spinner>
+  <mat-horizontal-stepper linear #stepper [selectedIndex]="stepperIndex" *ngIf="!isLoading">
     <mat-step label="اسم المادة" completed="true">
       <div class="AddSubject">
         <div>اسم المادة :</div>

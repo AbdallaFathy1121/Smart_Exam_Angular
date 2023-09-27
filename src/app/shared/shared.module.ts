@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LoadingComponent } from './components/loading/loading.component';
 import { RouterModule } from '@angular/router';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { MatrialModule } from './matrial.module';
@@ -8,7 +7,6 @@ import { MatrialModule } from './matrial.module';
 
 @NgModule({
   declarations: [
-    LoadingComponent,
     NavbarComponent
   ],
   imports: [
@@ -18,7 +16,6 @@ import { MatrialModule } from './matrial.module';
   ],
   exports: [
     CommonModule,
-    LoadingComponent,
     NavbarComponent,
     MatrialModule
   ],

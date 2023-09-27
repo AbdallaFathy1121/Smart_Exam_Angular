@@ -19,7 +19,6 @@
             <a routerLink="/doctor/students">الطلاب</a>
           </span>
         </li>
-        <li *ngIf="isAuthenticated" routerLinkActive="active"><a routerLink="./">المواد </a></li>
         <li *ngIf="isAuthenticated" routerLinkActive="active"><a style="cursor: pointer;" (click)="onLogout()">خروج</a></li>
         <li *ngIf="!isAuthenticated" routerLinkActive="active"><a routerLink="/auth/login">دخول</a></li>
         <li *ngIf="!isAuthenticated" routerLinkActive="active"><a routerLink="/auth/register">انشاء حساب</a></li>

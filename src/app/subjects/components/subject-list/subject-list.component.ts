@@ -15,6 +15,7 @@ export class SubjectListComponent implements OnInit, OnDestroy {
   userSubscription!: Subscription;
   subjects: SubjectsModel[] = [];
   userId!: string | undefined; 
+  isLoading = false;
 
   constructor (
     private subjectsService: SubjectsService,
@@ -34,15 +35,20 @@ export class SubjectListComponent implements OnInit, OnDestroy {
   }
 
   getAllSubjects() {
+    this.isLoading = true;
     this.subjectsService.getAllSubjects()
       .subscribe((res) => {
         this.subjects = res.data;
+        this.isLoading = false;
       }, errorRes => {
         this.toastr.error(errorRes);
+        this.isLoading = false;
       });
   }
 
   onDeleteSubject(id: number) {
+    this.isLoading = true;
+
     const model = {
       id: id,
       teacherId: this.userId
@@ -52,8 +58,10 @@ export class SubjectListComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         this.toastr.success(res.messages.toString());
         this.getAllSubjects();
+        this.isLoading = false;
       }, errorRes => {
         this.toastr.error(errorRes);
+        this.isLoading = false;
       });
   
   
