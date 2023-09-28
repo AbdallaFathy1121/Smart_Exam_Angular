@@ -1,11 +1,11 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { SubjectsModule } from '../subjects.module';
 import { SubjectsResponse } from '../models/subjects-response.model';
 import { environment } from 'src/environments/environment';
 import { catchError, throwError } from 'rxjs';
 import { DeleteSubjectModel } from '../models/delete-subject.model';
 import { MainResponse } from 'src/app/shared/models/main-response.model';
+import { SubjectResponse } from '../models/subject-response.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +17,14 @@ export class SubjectsService {
   getAllSubjects() {
     return this.http
       .get<SubjectsResponse> (environment.baseApi + 'Subjects')
+      .pipe(
+        catchError(this.handleError)
+      )
+  }
+
+  getSubjectById(id: number) {
+    return this.http
+      .get<SubjectResponse> (environment.baseApi + 'Subjects/' + id)
       .pipe(
         catchError(this.handleError)
       )

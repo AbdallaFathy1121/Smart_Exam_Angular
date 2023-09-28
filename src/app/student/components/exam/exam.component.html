@@ -1,26 +1,27 @@
-<div class="examBox">
-    <div class="examhead text-center"><h2>اختبار اللفة العربية</h2></div>
-    <div class="quizBox">
-        <strong ><span class="text-danger">سؤال 1</span> .  test</strong>
+<mat-spinner *ngIf="isLoading" class="m-auto mt-5"></mat-spinner>
+<div class="examBox" *ngIf="!isLoading">
+    <div class="examhead text-center"><h2>اختبار {{subjectName}}</h2></div>
+    <div class="quizBox" *ngFor="let question of questions let index = index">
+        <strong ><span class="text-danger">سؤال {{index + 1}}</span> .  {{question.questionName}}</strong>
         <div class="row mt-3" >
             <div class="col-md-6 col-sm-12">
                 <mat-radio-button value="answer1" color="warn"></mat-radio-button>
-                <label>تيست</label>
+                <label>{{question.a1}}</label>
             </div>
 
             <div class="col-md-6 col-sm-12">
                 <mat-radio-button value="answer2"  color="warn"></mat-radio-button>
-                <label>تيست</label>
+                <label>{{question.a2}}</label>
             </div>
 
             <div class="col-md-6 col-sm-12">
                 <mat-radio-button value="answer3"  color="warn"></mat-radio-button>
-                <label>تيست</label>
+                <label>{{question.a3}}</label>
             </div>
 
             <div class="col-md-6 col-sm-12">
-                <mat-radio-button value="answer4" color="warn"></mat-radio-button>
-                <label>تيست</label>
+                <mat-radio-button [value]="question.a4" color="warn"></mat-radio-button>
+                <label>{{question.a4}}</label>
             </div>
         </div>
         <hr>

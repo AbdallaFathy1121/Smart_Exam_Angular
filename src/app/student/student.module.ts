@@ -12,7 +12,7 @@ import { RouterModule } from '@angular/router';
   imports: [
     SharedModule,
     RouterModule.forChild([
-      {path: 'exam', component: ExamComponent}
+      {path: 'exam/:id', component: ExamComponent}
     ])
   ]
 })
