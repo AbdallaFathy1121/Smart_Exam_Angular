@@ -7,6 +7,8 @@ import { SubjectsService } from 'src/app/subjects/services/subjects.service';
 import { ToastrService } from 'ngx-toastr';
 import { ExamService } from 'src/app/doctor/services/exam.service';
 import { Question } from 'src/app/doctor/models/question.model';
+import { DeleteQuestionModel } from 'src/app/doctor/models/delete-question.model';
+import { StudentAnswerModel } from '../../models/student-answer.model';
 
 @Component({
   selector: 'app-exam',
@@ -16,12 +18,14 @@ import { Question } from 'src/app/doctor/models/question.model';
 export class ExamComponent implements OnInit, OnDestroy {
   subjectId!: number;
   subjectName: string = '';
-  userId!: string | undefined;
+  userId: string = '';
   teacherId!: string | undefined;
   paramSubscription!: Subscription;
   userSubscription!: Subscription;
   questions: Question[] = [];
   isLoading = false;
+  studentAnswers: StudentAnswerModel[] = [];
+  totalDegree: number = 0;
 
   constructor (
     private studentService: StudentService,
@@ -43,7 +47,9 @@ export class ExamComponent implements OnInit, OnDestroy {
 
     this.userSubscription = this.authService.user
       .subscribe((user) => {
-        this.userId = user?.userId;
+        if (user) {
+          this.userId = user.userId;
+        }
         console.log("User ID: " + this.userId);
       })
   }
@@ -77,6 +83,57 @@ export class ExamComponent implements OnInit, OnDestroy {
         this.toastr.error(errorRes);
         this.isLoading = false;
       })
+  }
+
+  onDeleteQuestion(id: number) {
+    this.isLoading = true;
+
+    const model = {
+      id: id
+    } as DeleteQuestionModel
+
+    this.examService.deleteQuestionById(model)
+      .subscribe(res => {
+        this.toastr.success(res.messages.toString());
+        this.isLoading = false;
+        this.getQuestionsBySubjectId();
+      }, errorRes => {
+        this.toastr.error(errorRes);
+        this.isLoading = false;
+      })
+  }
+
+  onAddStudentAnswer(questionId: number, event: any) {
+    let answer = event.value;
+
+    let question = this.questions.find(x=> x.id == questionId);
+    let studentAnswer = this.studentAnswers.find(x=> x.questionId == questionId);
+    if (studentAnswer != null) {
+      if (answer == question?.correctAnswer) {
+        studentAnswer.degree = 1;
+      }
+      else {
+        studentAnswer.degree = 0;
+      }
+    }
+    else {
+      let degree = 0;
+      if (answer == question?.correctAnswer) {
+        degree = 1;
+      }
+      let model = new StudentAnswerModel(questionId, degree);
+      this.studentAnswers.push(model);
+    }
+  }
+
+  onFinishExam() {
+    this.totalDegree = 0;
+
+    this.studentAnswers.forEach(element => {
+      this.totalDegree += element.degree;
+    });
+
+    console.log(this.totalDegree + ' / '+ this.questions.length);
   }
 
 }
