@@ -9,6 +9,7 @@ import { ExamService } from 'src/app/doctor/services/exam.service';
 import { Question } from 'src/app/doctor/models/question.model';
 import { DeleteQuestionModel } from 'src/app/doctor/models/delete-question.model';
 import { StudentAnswerModel } from '../../models/student-answer.model';
+import { AddStudentDegreeModel } from '../../models/add-student-degree.model';
 
 @Component({
   selector: 'app-exam',
@@ -50,7 +51,6 @@ export class ExamComponent implements OnInit, OnDestroy {
         if (user) {
           this.userId = user.userId;
         }
-        console.log("User ID: " + this.userId);
       })
   }
 
@@ -65,7 +65,6 @@ export class ExamComponent implements OnInit, OnDestroy {
       .subscribe((res) => {
         this.teacherId = res.data.teacher.id;
         this.subjectName = res.data.name;
-        console.log("teacher Id: " + this.teacherId);
         this.isLoading = false;
       }, errorRes => {
         this.toastr.error(errorRes);
@@ -106,7 +105,10 @@ export class ExamComponent implements OnInit, OnDestroy {
   onAddStudentAnswer(questionId: number, event: any) {
     let answer = event.value;
 
+    // Get question by ID
     let question = this.questions.find(x=> x.id == questionId);
+    
+    // Get student answer by question ID
     let studentAnswer = this.studentAnswers.find(x=> x.questionId == questionId);
     if (studentAnswer != null) {
       if (answer == question?.correctAnswer) {
@@ -127,13 +129,28 @@ export class ExamComponent implements OnInit, OnDestroy {
   }
 
   onFinishExam() {
+    this.isLoading = true;
     this.totalDegree = 0;
 
     this.studentAnswers.forEach(element => {
       this.totalDegree += element.degree;
     });
 
-    console.log(this.totalDegree + ' / '+ this.questions.length);
+    const model = {
+      subjectId: this.subjectId,
+      userId: this.userId,
+      degree: this.totalDegree,
+      examDegree: this.questions.length
+    } as AddStudentDegreeModel
+
+    this.studentService.AddStudentDegree(model)
+      .subscribe(res => {
+        this.toastr.success(res.messages.toString());
+        this.isLoading = false;
+      }, errorRes => {
+        this.toastr.error(errorRes);
+        this.isLoading = false;
+      })
   }
 
 }
