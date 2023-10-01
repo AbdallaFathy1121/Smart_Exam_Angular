@@ -27,6 +27,8 @@ export class ExamComponent implements OnInit, OnDestroy {
   isLoading = false;
   studentAnswers: StudentAnswerModel[] = [];
   totalDegree: number = 0;
+  examDegree: number = this.questions.length;
+  isFinish = false;
 
   constructor (
     private studentService: StudentService,
@@ -45,11 +47,12 @@ export class ExamComponent implements OnInit, OnDestroy {
         this.getSubjectById();
         this.getQuestionsBySubjectId();
       })
-
-    this.userSubscription = this.authService.user
+      
+      this.userSubscription = this.authService.user
       .subscribe((user) => {
         if (user) {
           this.userId = user.userId;
+          this.getStudentDegreeByUserIdAndSubjectId();
         }
       })
   }
@@ -81,6 +84,17 @@ export class ExamComponent implements OnInit, OnDestroy {
       }, errorRes => {
         this.toastr.error(errorRes);
         this.isLoading = false;
+      })
+  }
+
+  getStudentDegreeByUserIdAndSubjectId() {
+    this.studentService.getStudentDegreeByUserIdAndSubjectId(this.userId, this.subjectId)
+      .subscribe(res => {
+        if (res.data != null) {
+          this.totalDegree = res.data.degree;
+          this.examDegree = res.data.examDegree;
+          this.isFinish = true;
+        }
       })
   }
 
@@ -147,6 +161,9 @@ export class ExamComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         this.toastr.success(res.messages.toString());
         this.isLoading = false;
+        this.totalDegree = res.data.degree;
+        this.examDegree = res.data.examDegree;
+        this.isFinish = true;
       }, errorRes => {
         this.toastr.error(errorRes);
         this.isLoading = false;

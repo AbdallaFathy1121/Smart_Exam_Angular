@@ -1,35 +1,77 @@
 <mat-spinner *ngIf="isLoading" class="m-auto mt-5"></mat-spinner>
 <div class="examBox" *ngIf="!isLoading">
-    <div class="examhead text-center"><h2>اختبار {{subjectName}}</h2></div>
-    <div class="quizBox" *ngFor="let question of questions let index = index">
-        <strong ><span class="text-danger">سؤال {{index + 1}}</span> .  {{question.questionName}}</strong>
-        <div class="row mt-3" >
-            <div class="col-md-6 col-sm-12">
-                <mat-radio-button value="{{question.a1}}" (change)="onAddStudentAnswer(question.id, $event)" color="warn" name="{{index}}" *ngIf="userId != teacherId"></mat-radio-button>
-                <label>A. {{question.a1}}</label>
-            </div>
+  <div class="examhead text-center">
+    <h2>اختبار {{ subjectName }}</h2>
+  </div>
+  <div class="quizBox" *ngFor="let question of questions; let index = index">
+    <strong
+      ><span class="text-danger">سؤال {{ index + 1 }}</span> .
+      {{ question.questionName }}</strong
+    >
+    <div class="row mt-3">
+      <div class="col-md-6 col-sm-12">
+        <mat-radio-button
+          value="{{ question.a1 }}"
+          (change)="onAddStudentAnswer(question.id, $event)"
+          color="warn"
+          name="{{ index }}"
+          *ngIf="userId != teacherId && !isFinish"
+        ></mat-radio-button>
+        <label>A. {{ question.a1 }}</label>
+      </div>
 
-            <div class="col-md-6 col-sm-12">
-                <mat-radio-button value="{{question.a2}}" (change)="onAddStudentAnswer(question.id, $event)" color="warn" name="{{index}}" *ngIf="userId != teacherId"></mat-radio-button>
-                <label>B. {{question.a2}}</label>
-            </div>
+      <div class="col-md-6 col-sm-12">
+        <mat-radio-button
+          value="{{ question.a2 }}"
+          (change)="onAddStudentAnswer(question.id, $event)"
+          color="warn"
+          name="{{ index }}"
+          *ngIf="userId != teacherId && !isFinish"
+        ></mat-radio-button>
+        <label>B. {{ question.a2 }}</label>
+      </div>
 
-            <div class="col-md-6 col-sm-12">
-                <mat-radio-button value="{{question.a3}}" (change)="onAddStudentAnswer(question.id, $event)" color="warn" name="{{index}}" *ngIf="userId != teacherId"></mat-radio-button>
-                <label>C. {{question.a3}}</label>
-            </div>
+      <div class="col-md-6 col-sm-12">
+        <mat-radio-button
+          value="{{ question.a3 }}"
+          (change)="onAddStudentAnswer(question.id, $event)"
+          color="warn"
+          name="{{ index }}"
+          *ngIf="userId != teacherId && !isFinish"
+        ></mat-radio-button>
+        <label>C. {{ question.a3 }}</label>
+      </div>
 
-            <div class="col-md-6 col-sm-12">
-                <mat-radio-button value="{{question.a4}}" (change)="onAddStudentAnswer(question.id, $event)" color="warn" name="{{index}}" *ngIf="userId != teacherId"></mat-radio-button>
-                <label>D. {{question.a4}}</label>
-            </div>
-        </div>
-        <div class="text-start" *ngIf="userId == teacherId">
-            <button class="btn btn-danger" type="button" (click)="onDeleteQuestion(question.id)">حذف</button>
-        </div>
-        <hr>
+      <div class="col-md-6 col-sm-12">
+        <mat-radio-button
+          value="{{ question.a4 }}"
+          (change)="onAddStudentAnswer(question.id, $event)"
+          color="warn"
+          name="{{ index }}"
+          *ngIf="userId != teacherId && !isFinish"
+        ></mat-radio-button>
+        <label>D. {{ question.a4 }}</label>
+      </div>
     </div>
-    <div class="text-center">
-        <button class="btn btn-success px-5 fs-5" (click)="onFinishExam()"> النتيجة</button>
+    <div class="text-start" *ngIf="userId == teacherId">
+      <button
+        class="btn btn-danger"
+        type="button"
+        (click)="onDeleteQuestion(question.id)"
+      >
+        حذف
+      </button>
     </div>
+    <hr />
+  </div>
+  <div class="text-center">
+    <button
+      *ngIf="!isFinish"
+      class="btn btn-success px-5 fs-5"
+      (click)="onFinishExam()"
+    >
+      النتيجة
+    </button>
+    <h2 *ngIf="isFinish">{{ examDegree + " / " + totalDegree }}</h2>
+  </div>
 </div>

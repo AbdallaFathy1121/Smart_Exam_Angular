@@ -16,9 +16,19 @@ export class StudentService {
 
   AddStudentDegree(model: AddStudentDegreeModel) {
     return this.http
-      .post<MainResponse> (
+      .post<any> (
         environment.baseApi + 'StudentDegrees/Add',
         model
+      )
+      .pipe(
+        catchError(this.handleError)
+      )
+  }
+
+  getStudentDegreeByUserIdAndSubjectId(userId: string, subjectId: number) {
+    return this.http
+      .get<any> (
+        environment.baseApi + 'StudentDegrees/UserId/' + userId + '/SubjectId/' + subjectId
       )
       .pipe(
         catchError(this.handleError)
