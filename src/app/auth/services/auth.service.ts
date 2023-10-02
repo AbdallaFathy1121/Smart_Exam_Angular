@@ -42,6 +42,14 @@ export class AuthService {
       )
   }
 
+  getUserById(id: string) {
+    return this.http
+      .get<any> (environment.baseApi + "Users/" + id)
+      .pipe(
+        catchError(this.handleError)
+      )
+  }
+
   logout() {
     this.user.next(null);
     this.router.navigate(['/auth/login']);

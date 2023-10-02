@@ -1,0 +1,50 @@
+<div class="students">
+  <mat-spinner *ngIf="isLoading" class="m-auto"></mat-spinner>
+  <table
+    mat-table
+    [dataSource]="dataSource"
+    class="mat-elevation-z8 demo-table"
+    *ngIf="!isLoading"
+  >
+    <!-- Position Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="userName">
+      <th mat-header-cell *matHeaderCellDef>الطالب</th>
+      <td mat-cell *matCellDef="let element">{{ element.userName }}</td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="subjectName">
+      <th mat-header-cell *matHeaderCellDef>المادة</th>
+      <td mat-cell *matCellDef="let element">{{ element.subjectName }}</td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="degree">
+      <th mat-header-cell *matHeaderCellDef>درجته</th>
+      <td mat-cell *matCellDef="let element">{{ element.degree }}</td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="examDegree">
+      <th mat-header-cell *matHeaderCellDef>درجة الامتحان</th>
+      <td mat-cell *matCellDef="let element">{{ element.examDegree }}</td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="percentage">
+      <th mat-header-cell *matHeaderCellDef>النسبة المئوية</th>
+      <td mat-cell *matCellDef="let element">
+        {{ (element.degree / element.examDegree) * 100 }} %
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</div>

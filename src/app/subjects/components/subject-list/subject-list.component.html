@@ -10,13 +10,20 @@
         <button
           mat-raised-button
           color="warn"
-          class="mx-1"
-          *ngIf="userId == subject.teacher.id"
+          *ngIf="userId == subject.teacher.id || isAdmin"
           (click)="onDeleteSubject(subject.id)"
         >
           حذف
         </button>
-        <button type="button" class="btn btn-success" [routerLink]="'/student/exam/'+subject.id">ابدأ الاختبار</button>
+        <button
+          type="button"
+          class="btn btn-primary mx-1"
+          *ngIf="userId == subject.teacher.id || isAdmin"
+          [routerLink]="'/doctor/students/' + subject.id"
+        >
+          نتائج الطلاب
+        </button>
+        <button type="button" class="btn btn-success" [routerLink]="'/student/exam/' + subject.id">ابدأ الاختبار</button>
       </div>
     </div>
   </div>

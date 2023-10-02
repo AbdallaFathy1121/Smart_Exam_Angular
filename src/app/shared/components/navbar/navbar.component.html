@@ -14,9 +14,12 @@
         <li routerLinkActive="active" *ngIf="roles">
           <a routerLink="/doctor/new-exam">أختبار جديد</a>
         </li>
+        <li routerLinkActive="active" *ngIf="isAdmin">
+          <a routerLink="/admin">جميع درجات الطلاب</a>
+        </li>
         <li routerLinkActive="active" *ngIf="isAuthenticated">
-          <span *ngIf="roles">
-            <a routerLink="/doctor/students">الطلاب</a>
+          <span *ngIf="!roles">
+            <a routerLink="/student/degrees">درجاتى</a>
           </span>
         </li>
         <li *ngIf="isAuthenticated" routerLinkActive="active"><a style="cursor: pointer;" (click)="onLogout()">خروج</a></li>

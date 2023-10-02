@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { SubjectsModel } from '../../models/subjects.model';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { DeleteSubjectModel } from '../../models/delete-subject.model';
+import { Roles } from 'src/app/shared/models/roles';
 
 @Component({
   selector: 'app-subject-list',
@@ -16,6 +17,7 @@ export class SubjectListComponent implements OnInit, OnDestroy {
   subjects: SubjectsModel[] = [];
   userId!: string | undefined; 
   isLoading = false;
+  isAdmin = false;
 
   constructor (
     private subjectsService: SubjectsService,
@@ -25,7 +27,16 @@ export class SubjectListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.userSubscription = this.authService.user.subscribe((user) => {
-      this.userId = user?.userId;
+      if (user) {
+        this.userId = user?.userId;
+        if (user.roles) {
+          if (user?.roles.includes(Roles.ADMIN)) {
+            this.isAdmin = true;
+          } else {
+            this.isAdmin = false;
+          }
+        }
+      }
       this.getAllSubjects();
     });
   }

@@ -16,7 +16,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
     RouterModule.forChild([
       {path: 'new-exam', component: NewExamComponent},
-      {path: 'students', component: StudentsComponent}
+      {path: 'students/:id', component: StudentsComponent}
     ])
   ]
 })

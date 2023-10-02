@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { StudentService } from '../../services/student.service';
 import { AuthService } from 'src/app/auth/services/auth.service';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { SubjectsService } from 'src/app/subjects/services/subjects.service';
 import { ToastrService } from 'ngx-toastr';
@@ -36,7 +36,8 @@ export class ExamComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private subjectsService: SubjectsService,
     private toastr: ToastrService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
   
   
@@ -48,11 +49,13 @@ export class ExamComponent implements OnInit, OnDestroy {
         this.getQuestionsBySubjectId();
       })
       
-      this.userSubscription = this.authService.user
+    this.userSubscription = this.authService.user
       .subscribe((user) => {
         if (user) {
           this.userId = user.userId;
           this.getStudentDegreeByUserIdAndSubjectId();
+        } else {
+          this.router.navigate(['/auth/login']);
         }
       })
   }

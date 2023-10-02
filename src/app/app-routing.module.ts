@@ -27,6 +27,14 @@ const routes: Routes = [
     canActivate: [IsAuthenticatedGuard],
     loadChildren: () => import('./student/student.module').then((x) => x.StudentModule),
   },
+  {
+    path: 'admin',
+    canActivate: [IsAuthenticatedGuard, HasRoleGuard],
+    data: {
+      role: Roles.ADMIN
+    },
+    loadChildren: () => import('./admin/admin.module').then((x) => x.AdminModule)
+  },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
 

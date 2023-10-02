@@ -4,6 +4,7 @@ import { AddStudentDegreeModel } from '../models/add-student-degree.model';
 import { MainResponse } from 'src/app/shared/models/main-response.model';
 import { environment } from 'src/environments/environment';
 import { catchError, throwError } from 'rxjs';
+import { StudentDegreesResponse } from '../models/student-degrees-response.model';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +30,26 @@ export class StudentService {
     return this.http
       .get<any> (
         environment.baseApi + 'StudentDegrees/UserId/' + userId + '/SubjectId/' + subjectId
+      )
+      .pipe(
+        catchError(this.handleError)
+      )
+  }
+
+  getStudentDegreeByUserId(userId: string) {
+    return this.http
+      .get<StudentDegreesResponse> (
+        environment.baseApi + 'StudentDegrees/UserId/' + userId
+      )
+      .pipe(
+        catchError(this.handleError)
+      )
+  }
+
+  getStudentDegreeBySubjectId(subjectId: number) {
+    return this.http
+      .get<StudentDegreesResponse> (
+        environment.baseApi + 'StudentDegrees/SubjectId/' + subjectId
       )
       .pipe(
         catchError(this.handleError)
